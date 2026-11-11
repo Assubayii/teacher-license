@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>تجميعات الرخصة المهنية</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+/* Concept: a teacher's marked notebook. Paper ground, ink-green accent, pencil-yellow highlighter used once per screen. */
+:root{
+  --bg:#F4F6F2; --surface:#FFFFFF; --fg:#10201B; --muted:#3D4B45;
+  --accent:#1E6B58; --accent-ink:#FFFFFF; --mark:#EBC24A; --line:#D7DED6;
+  --good:#1B6E44; --good-bg:#E2F1E7; --bad:#A93A2A; --bad-bg:#F8E5E1;
+  --font-display:'Reem Kufi','Tajawal',system-ui,sans-serif;
+  --font-body:'Tajawal',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111A17; --surface:#1A2623; --fg:#F3F8F5; --muted:#C0D0C9;
+    --accent:#5BC2A4; --accent-ink:#0D1714; --mark:#E2B947; --line:#2B3B36;
+    --good:#6CD197; --good-bg:#183225; --bad:#F2917F; --bad-bg:#3A201B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111A17; --surface:#1A2623; --fg:#F3F8F5; --muted:#C0D0C9;
+  --accent:#5BC2A4; --accent-ink:#0D1714; --mark:#E2B947; --line:#2B3B36;
+  --good:#6CD197; --good-bg:#183225; --bad:#F2917F; --bad-bg:#3A201B;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:19px; line-height:1.95; font-weight:500;
+  direction:rtl; text-align:right;
+  padding-block:20px 48px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap{max-width:680px; margin-inline:auto; display:flex; flex-direction:column; gap:28px}
+h1,h2,h3{font-family:var(--font-display); margin:0; line-height:1.35; text-wrap:balance}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+.top{display:flex; align-items:center; justify-content:space-between; gap:12px; min-width:0}
+.brand{font-family:var(--font-display); font-weight:700; font-size:18px; color:var(--accent); letter-spacing:.01em}
+.link-btn{background:none; border:0; padding:8px 4px; color:var(--muted); font-size:15px; text-decoration:underline; text-underline-offset:4px}
+
+/* Home */
+.hero h1{font-size:clamp(28px,7vw,40px); font-weight:700}
+.hero h1 .hl{background:linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 92%, transparent 92%); padding-inline:2px}
+.hero p{margin:14px 0 0; color:var(--muted); max-width:52ch; font-size:19px}
+
+.section-label{font-size:16px; color:var(--muted); font-weight:700; margin:0 0 8px; letter-spacing:.04em}
+.section-label.grp{margin:22px 0 10px; color:var(--accent)}
+.axes{display:flex; flex-direction:column; border-top:1px solid var(--line)}
+.axis{
+  display:grid; grid-template-columns:1fr auto; align-items:center; gap:4px 16px;
+  width:100%; text-align:right; background:none; border:0; border-bottom:1px solid var(--line);
+  padding:16px 4px; min-width:0;
+}
+.axis:hover .axis-go{transform:translateX(-4px)}
+.axis h3{font-family:var(--font-body); font-size:21px; font-weight:700}
+.axis small{grid-column:1; color:var(--muted); font-size:16.5px; line-height:1.65}
+.axis-meta{grid-column:2; grid-row:1 / span 2; display:flex; align-items:center; gap:12px}
+.count{font-variant-numeric:tabular-nums; font-size:16px; color:var(--muted); white-space:nowrap}
+.axis-go{color:var(--accent); font-size:22px; transition:transform .15s ease}
+.axis.mixed h3{color:var(--accent); font-weight:700}
+.best{display:inline-block; margin-inline-start:8px; font-size:13px; color:var(--good); background:var(--good-bg); padding:1px 9px; border-radius:99px; font-variant-numeric:tabular-nums}
+.note{font-size:16px; color:var(--muted); border-inline-start:3px solid var(--mark); padding:2px 12px; margin:0}
+
+/* Quiz */
+.progress{display:flex; flex-direction:column; gap:8px}
+.progress-row{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:16.5px; color:var(--muted); font-variant-numeric:tabular-nums}
+.bar{height:6px; background:var(--line); border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .25s ease}
+.tag{font-size:16px; color:var(--accent); font-weight:700}
+.q{font-family:var(--font-body); font-size:clamp(23px,5.6vw,29px); font-weight:700; line-height:1.7; margin:0}
+.options{display:flex; flex-direction:column; gap:10px; margin:0; padding:0; list-style:none}
+.opt{
+  display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start; width:100%; text-align:right;
+  background:var(--surface); border:1.5px solid var(--line); border-radius:10px; padding:14px 16px; min-width:0;
+  transition:border-color .12s ease, background .12s ease;
+}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt .letter{
+  font-family:var(--font-display); font-weight:700; color:var(--muted); width:28px; height:28px;
+  display:grid; place-items:center; border:1.5px solid var(--line); border-radius:50%; font-size:14px; flex:none
+}
+.opt .txt{overflow-wrap:anywhere; font-size:19.5px; line-height:1.75}
+.q[dir=ltr], .opt .txt[dir=ltr], .rcard h3[dir=ltr]{text-align:left}
+.q[dir=ltr]{line-height:1.5}
+.opt .txt[dir=ltr]{line-height:1.55}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--good); background:var(--good-bg)}
+.opt.right .letter{background:var(--good); color:var(--bg); border-color:var(--good)}
+.opt.wrong{border-color:var(--bad); background:var(--bad-bg)}
+.opt.wrong .letter{background:var(--bad); color:var(--bg); border-color:var(--bad)}
+.opt.dim{opacity:.55}
+.explain{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px}
+.explain strong{display:block; margin-bottom:2px}
+.explain.ok strong{color:var(--good)}
+.explain.no strong{color:var(--bad)}
+.explain p{margin:0; color:var(--fg); font-size:18.5px}
+.explain strong{font-size:19px}
+.actions{display:flex; gap:12px; flex-wrap:wrap}
+.btn{
+  background:var(--accent); color:var(--accent-ink); border:0; border-radius:10px; padding:12px 24px;
+  font-weight:700; font-size:18px; min-height:50px
+}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:none; color:var(--fg); border:1.5px solid var(--line)}
+
+/* Result */
+.score{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+.score b{font-family:var(--font-display); font-size:clamp(56px,16vw,84px); line-height:1; color:var(--accent); font-variant-numeric:tabular-nums}
+.score span{font-size:20px; color:var(--muted)}
+.verdict{font-size:19px; margin:6px 0 0}
+.verdict .hl{background:linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 92%, transparent 92%)}
+.breakdown{display:flex; flex-direction:column; gap:12px}
+.brow{display:grid; grid-template-columns:minmax(0,9em) 1fr auto; gap:12px; align-items:center; font-size:17px}
+.brow .bar{height:8px}
+.brow b{font-variant-numeric:tabular-nums; font-weight:500; color:var(--muted); font-size:14px}
+.review{display:flex; flex-direction:column; gap:14px}
+.rcard{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px}
+.rcard h3{font-family:var(--font-body); font-size:19px; font-weight:700; margin-bottom:8px}
+.rcard p{margin:4px 0; font-size:17px}
+.rcard .mine{color:var(--bad)}
+.rcard .corr{color:var(--good)}
+.rcard .why{color:var(--muted)}
+.allgood{background:var(--good-bg); color:var(--good); border-radius:10px; padding:14px 16px; margin:0}
+footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:14px}
+@media (max-width:420px){
+  .brow{grid-template-columns:1fr auto; }
+  .brow .bar{grid-column:1 / -1; grid-row:2}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+<style>[hidden]{display:none!important} body{margin:0;padding-block:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-bottom,0px))}</style>
+</head>
+<body>
+
+<div class="wrap" dir="rtl" lang="ar" id="app"></div>
+
+<script>
+(function(){
+  var AXES = [
+    {id:'learn', g:'ped', name:'نظريات التعلم', desc:'بافلوف وسكنر وباندورا وبياجيه وماسلو'},
+    {id:'dev', g:'ped', name:'النمو والتفكير والدافعية', desc:'بلوم وفيجوتسكي وإريكسون وكولبرج وجاردنر'},
+    {id:'assess', g:'ped', name:'التقويم والقياس', desc:'أنواع التقويم والصدق والثبات'},
+    {id:'class', g:'ped', name:'إدارة الصف', desc:'الوقاية من المشكلات والتغذية الراجعة'},
+    {id:'plan', g:'ped', name:'التخطيط والتدريس', desc:'الأهداف والتمايز والتعلم التعاوني'},
+    {id:'strat', g:'ped', name:'استراتيجيات التدريس', desc:'الصف المقلوب والتعلم بالمشكلات ودورة التعلم'},
+    {id:'engskill', g:'eng', en:true, name:'مهارات اللغة', desc:'الاستماع والتحدث والقراءة والكتابة'},
+    {id:'engmethod', g:'eng', en:true, name:'طرائق التدريس واكتساب اللغة', desc:'كراشن وCLT وTBLT والتداخل اللغوي'},
+    {id:'engling', g:'eng', en:true, name:'نظام اللغة واللسانيات', desc:'الأصوات والصرف والتركيب والدلالة والتداولية'}
+  ];
+
+  // answer = index of the correct option in opts
+  var BANK = [
+    {a:'learn', q:'يسيل لعاب كلب عند سماع جرس سبق اقترانه مرارًا بالطعام. ماذا يسمى الجرس بعد أن تعلّم الكلب هذا الاقتران؟', opts:['مثيرًا شرطيًا','مثيرًا غير شرطي','استجابة غير شرطية','معززًا إيجابيًا'], answer:0, why:'في الإشراط الكلاسيكي لبافلوف يتحول المثير المحايد (الجرس) إلى مثير شرطي بعد اقترانه بمثير غير شرطي (الطعام)، فيستدعي الاستجابة وحده.'},
+    {a:'learn', q:'يرفع معلم عن طلابه مهمة مزعجة (واجبًا إضافيًا) كلما التزموا الهدوء، فيزداد التزامهم بالهدوء. ما المبدأ المطبق؟', opts:['التعزيز الإيجابي','التعزيز السلبي','العقاب','الإطفاء'], answer:1, why:'التعزيز السلبي يزيد تكرار السلوك عن طريق إزالة مثير منفّر بعده. أما التعزيز الإيجابي فيزيده بإضافة مثير مرغوب.'},
+    {a:'learn', q:'يتعلم طفل طريقة الاعتذار حين يشاهد أخاه الأكبر يعتذر فينال استحسان والديه. أي نظرية تفسر ذلك؟', opts:['الإشراط الكلاسيكي','التعلم بالمحاولة والخطأ','التعلم بالاستبصار','التعلم بالملاحظة عند باندورا'], answer:3, why:'يرى باندورا أن الإنسان يتعلم بملاحظة النماذج ونتائج سلوكها، دون أن يمارس السلوك بنفسه.'},
+    {a:'learn', q:'يعدّل طفل تصوره عن «الطيور» ليشمل البطريق بعد أن كان يظن أن كل الطيور تطير. ماذا تسمي هذه العملية عند بياجيه؟', opts:['التمثّل','المواءمة','الاتزان','التعزيز'], answer:1, why:'المواءمة هي تعديل البنية المعرفية القائمة لاستيعاب خبرة جديدة لا تناسبها. أما التمثّل فهو إدخال الخبرة الجديدة في البنية كما هي.'},
+    {a:'learn', q:'يأتي طالب إلى المدرسة جائعًا ومتعبًا ولا يتابع الدرس. وفق هرم ماسلو، أي حاجة تُشبع أولًا ليتمكن من التعلم؟', opts:['الحاجة إلى تحقيق الذات','الحاجة إلى التقدير','الحاجات الفسيولوجية','الحاجة إلى الانتماء'], answer:2, why:'في هرم ماسلو تأتي الحاجات الفسيولوجية (الطعام والنوم والراحة) في القاعدة، وتُشبع قبل الحاجات الأعلى منها.'},
+
+    {a:'assess', q:'اختبار نهاية الفصل الذي تُحسب منه الدرجة النهائية للطالب يُعد تقويمًا:', opts:['تشخيصيًا','تكوينيًا','ختاميًا','ذاتيًا'], answer:2, why:'التقويم الختامي يُجرى في نهاية فترة التعلم لإصدار حكم على مستوى التحصيل. أما التكويني فيجري أثناء التعلم لتحسينه.'},
+    {a:'assess', q:'يطبق معلم اختبارًا قصيرًا قبل بدء وحدة جديدة ليعرف ما يعرفه طلابه مسبقًا. ما نوع هذا التقويم؟', opts:['تشخيصي','ختامي','معياري','تراكمي'], answer:0, why:'التقويم التشخيصي (القبلي) يكشف المعرفة السابقة ونقاط الضعف قبل التدريس ليخطط المعلم وفقها.'},
+    {a:'assess', q:'اختبار في الرياضيات صيغت مسائله في نصوص طويلة، فصار يقيس القراءة أكثر مما يقيس الرياضيات. أي خاصية ضعيفة فيه؟', opts:['الثبات','الصدق','سهولة التصحيح','الشمول الزمني'], answer:1, why:'الصدق هو أن يقيس الاختبار ما وُضع لقياسه. وهنا يقيس شيئًا آخر (القدرة القرائية) فيضعف صدقه.'},
+    {a:'assess', q:'أعاد معلم تطبيق الاختبار نفسه على الطلاب أنفسهم بعد أسبوعين في ظروف مماثلة، فجاءت النتائج متقاربة جدًا. ما الخاصية التي يدل عليها ذلك؟', opts:['الصدق','الموضوعية','الثبات','التمييز'], answer:2, why:'الثبات هو اتساق نتائج الاختبار عند إعادة تطبيقه في ظروف مماثلة.'},
+
+    {a:'class', q:'أي إجراء هو الأكثر فاعلية للوقاية من المشكلات السلوكية في الصف؟', opts:['انتظار وقوع المشكلة ثم المعاقبة','وضع قواعد واضحة منذ بداية العام بمشاركة الطلاب','إخراج أي طالب يخالف القواعد من الصف فورًا','تجاهل السلوكيات كلها مهما كانت'], answer:1, why:'القواعد الواضحة التي شارك الطلاب في صياغتها تقلل المخالفات وتزيد التزام الطلاب بها.'},
+    {a:'class', q:'طالب يثير ضجة بسيطة وغير خطرة ليجذب انتباه المعلم والزملاء. ما الاستجابة الأنسب؟', opts:['توبيخه أمام زملائه','تجاهل الضجة البسيطة وتعزيز سلوكه الإيجابي عند ظهوره','نقله إلى فصل آخر فورًا','إعطاؤه الاهتمام الكامل كلما أزعج'], answer:1, why:'الانتباه يعزز السلوك الذي يأتي بعده، فيُعزَّز السلوك المرغوب ويُتجاهل المزعج البسيط حتى لا يُكافأ.'},
+    {a:'class', q:'ما فائدة ترك زمن انتظار من ثلاث إلى خمس ثوانٍ بعد طرح السؤال وقبل اختيار من يجيب؟', opts:['توفير وقت الحصة','معاقبة الطلاب غير المستعدين','منح الطلاب وقتًا للتفكير ورفع جودة الإجابات','إتاحة الإجابة لأسرع طالب فقط'], answer:2, why:'زمن الانتظار يشجع عددًا أكبر من الطلاب على المشاركة ويحسّن عمق الإجابات.'},
+    {a:'class', q:'أي تغذية راجعة تفيد الطالب أكثر؟', opts:['عبارة عامة مثل «أحسنت»','مقارنة أدائه بزميله','ملاحظة محددة عن المهمة وكيف يحسنها، تُقدَّم قريبًا من وقت الأداء','درجة فقط دون تعليق'], answer:2, why:'التغذية الراجعة الفعالة محددة وتتعلق بالمهمة وتشير إلى خطوة التحسين، وتُقدَّم في وقت قريب من الأداء.'},
+
+    {a:'plan', q:'أي من الأهداف الآتية صيغ صياغة سلوكية جيدة قابلة للقياس؟', opts:['أن يفهم الطالب مفهوم المساحة','أن يحسب الطالب مساحة مستطيل بتطبيق القانون','أن يستمتع الطالب بدرس الهندسة','أن يتعرف الطالب إلى أهمية الرياضيات'], answer:1, why:'الهدف السلوكي يبدأ بفعل قابل للملاحظة والقياس (يحسب). أما «يفهم» و«يستمتع» فلا يمكن قياسهما مباشرة.'},
+    {a:'plan', q:'في صف واحد تتفاوت مستويات الطلاب وأساليب تعلمهم، فيقدم المعلم أنشطة بمستويات وأساليب متعددة للمحتوى نفسه. ما اسم هذا الأسلوب؟', opts:['التدريس المتمايز','التعلم بالاكتشاف الحر','التدريس المباشر','التعلم بالمحاكاة'], answer:0, why:'التدريس المتمايز يكيّف المحتوى والأنشطة والتقويم لتناسب تنوع الطلاب في الصف الواحد.'},
+    {a:'plan', q:'ما الذي يميز التعلم التعاوني الحقيقي عن مجرد جلوس الطلاب في مجموعات؟', opts:['عدد الطلاب في المجموعة','المسؤولية الفردية والاعتماد الإيجابي المتبادل بين الأعضاء','تولي أفضل طالب العمل كله','غياب دور المعلم'], answer:1, why:'يقوم التعلم التعاوني على اعتماد الأعضاء على بعضهم ومساءلة كل فرد عن نصيبه من العمل، وليس على الجلوس معًا فقط.'},
+    {a:'plan', q:'ما الهدف الرئيس من ختام الدرس؟', opts:['إنهاء الحصة مبكرًا','مراجعة أبرز ما تعلمه الطلاب والتأكد من تحقق الأهداف','عرض موضوع الدرس القادم فقط','إعطاء الدرجات'], answer:1, why:'الختام يربط أجزاء الدرس ويؤكد المفاهيم الأساسية ويتيح للمعلم التحقق من تحقق الأهداف.'},
+
+    {a:'dev', q:'يطلب معلم من طلابه تصميم تجربة أصلية لاختبار فرضية جديدة. وفق تصنيف بلوم المعدّل، أي مستوى معرفي يمارسه الطلاب؟', opts:['التذكر','التطبيق','التحليل','الإبداع (الابتكار)'], answer:3, why:'تصميم شيء جديد وإنتاجه هو أعلى مستوى في تصنيف بلوم المعدّل (الإبداع). التذكر والتطبيق والتحليل مستويات أدنى منه.'},
+    {a:'dev', q:'يطلب معلم من طلابه إعادة شرح فكرة الدرس بأسلوبهم الخاص دون الحفظ الحرفي. أي مستوى من تصنيف بلوم يُقاس؟', opts:['التذكر','الفهم','التقويم','الإبداع'], answer:1, why:'إعادة صياغة المعنى بكلمات الطالب مؤشر على الفهم، أما التذكر فهو استرجاع المعلومة كما حُفظت.'},
+    {a:'dev', q:'يساعد معلم طالبًا في مهمة تفوق قدرته المستقلة قليلًا، ثم يسحب مساعدته تدريجيًا كلما أتقن. أي مفهوم لفيجوتسكي يطبقه؟', opts:['منطقة النمو الأقرب والسقالات','الاتزان المعرفي','التعزيز المتقطع','التعلم الكامن'], answer:0, why:'منطقة النمو الأقرب هي الفرق بين ما يؤديه الطالب وحده وما يؤديه بمساعدة، والسقالات دعم مؤقت يُسحب مع تزايد الكفاءة.'},
+    {a:'dev', q:'طفل في المرحلة الابتدائية يفرح بإنجاز مهامه المدرسية ويخشى أن يشعر بأنه أقل من أقرانه. أي مرحلة نفسية اجتماعية عند إريكسون؟', opts:['الثقة مقابل عدم الثقة','المبادرة مقابل الشعور بالذنب','الاجتهاد مقابل الشعور بالنقص','الهوية مقابل اضطراب الدور'], answer:2, why:'مرحلة الاجتهاد مقابل الشعور بالنقص تقابل سن المدرسة تقريبًا، ويبني فيها الطفل كفاءته من إنجاز المهام ومن تغذية راجعة مشجعة.'},
+    {a:'dev', q:'طالب في التاسعة يدرك أن كمية الماء لا تتغير عند سكبها من كأس عريضة إلى أخرى ضيقة وطويلة. أي مفهوم بياجيه تدل عليه إجابته؟', opts:['الحفظ (ثبات الكمية)','التمركز حول الذات','التفكير الفرضي الاستنتاجي','دوام الشيء'], answer:0, why:'إدراك ثبات الكمية رغم تغير الشكل (الحفظ) سمة مرحلة العمليات المادية (المحسوسة) تقريبًا من ٧ إلى ١١ سنة.'},
+    {a:'dev', q:'أي الحالات الآتية تمثل دافعية داخلية للتعلم؟', opts:['يذاكر طالب ليحصل على هدية','يقرأ طالب عن الفضاء لأنه يستمتع باكتشاف المعلومات','يذاكر طالب خوفًا من عقاب أسرته','يشارك طالب لينال درجة المشاركة'], answer:1, why:'الدافعية الداخلية تنبع من متعة النشاط واهتمام الطالب به، أما الهدايا والدرجات والخوف من العقاب فدوافع خارجية.'},
+    {a:'dev', q:'طالب يتعلم أفضل عبر الحركة والتجارب العملية وتمثيل الأدوار. أي نوع من الذكاء المتعدد عند جاردنر يغلب عليه؟', opts:['اللغوي','المنطقي الرياضي','الجسمي الحركي','الموسيقي'], answer:2, why:'الذكاء الجسمي الحركي هو القدرة على استخدام الجسم والأيدي في التعلم والتعبير وحل المشكلات.'},
+    {a:'dev', q:'يلتزم طالب بقواعد الصف لتجنب العقوبة فقط. أي مستوى من مستويات النمو الخلقي عند كولبرج يمثله؟', opts:['ما قبل العرفي','العرفي','ما بعد العرفي','المستقل'], answer:0, why:'في المستوى ما قبل العرفي يوجَّه السلوك بالعقاب والثواب الخارجي. وفي العرفي يلتزم الفرد بالقواعد لنيل رضا الآخرين أو حفظ النظام.'},
+    {a:'dev', q:'ما الأكثر ملاءمة لتنمية التفكير الناقد عند الطلاب؟', opts:['حفظ المعلومات واسترجاعها','تقييم حجج متعارضة والحكم على قوة أدلتها','تكرار الإجابة النموذجية','نسخ ملخص الدرس'], answer:1, why:'التفكير الناقد يقوم على تحليل الحجج وتقييم الأدلة وإصدار حكم معلل، وليس على الحفظ والتكرار.'},
+
+    {a:'strat', q:'يشاهد الطلاب شرح الدرس في مقطع مصوّر في البيت، ثم تُخصص الحصة للتطبيق والنقاش والمشاريع. ما اسم هذه الاستراتيجية؟', opts:['الصف المقلوب','التعلم بالاكتشاف الحر','المحاضرة التقليدية','التعلم بالمحاكاة'], answer:0, why:'في الصف المقلوب ينتقل عرض المحتوى خارج الحصة ويُستثمر وقت الحصة في الأنشطة والتطبيق بإشراف المعلم.'},
+    {a:'strat', q:'يطرح المعلم سؤالًا، فيفكر كل طالب بمفرده، ثم يناقش زميله، ثم تُعرض الأفكار على الصف. ما الاستراتيجية؟', opts:['العصف الذهني','فكّر – زاوِج – شارك','لعب الأدوار','المناظرة'], answer:1, why:'هذه خطوات استراتيجية «فكّر – زاوِج – شارك»: تفكير فردي ثم حوار ثنائي ثم مشاركة جماعية.'},
+    {a:'strat', q:'يكتب الطلاب في بداية الدرس ما يعرفونه عن الموضوع وما يريدون معرفته، ثم يدونون في نهايته ما تعلموه. أي استراتيجية؟', opts:['خرائط المفاهيم','جدول «أعرف – أريد أن أعرف – تعلمت»','القبعات الست','الخريطة الذهنية'], answer:1, why:'جدول (أعرف – أريد أن أعرف – تعلمت) ينشّط المعرفة السابقة ويوجّه الفضول ثم يوثّق التعلم الجديد.'},
+    {a:'strat', q:'يبدأ المعلم الدرس بمشكلة واقعية مفتوحة الحل، ويوجّه الطلاب إلى البحث والتخطيط لحلها. ما أنسب اسم لهذا النهج؟', opts:['التدريس المباشر','التعلم القائم على المشكلات','التعلم بالإتقان','التسميع'], answer:1, why:'يبدأ التعلم القائم على المشكلات بمشكلة حقيقية يبحث الطلاب حلها، فيكتسبون المعرفة والمهارات أثناء ذلك.'},
+    {a:'strat', q:'في نموذج دورة التعلم الخماسية (5E)، أي مرحلة تأتي مباشرة بعد الاستكشاف؟', opts:['التقويم','التفسير','التوسّع','الاستثارة'], answer:1, why:'ترتيب المراحل: الاستثارة، الاستكشاف، التفسير، التوسّع، التقويم.'},
+    {a:'strat', q:'يعرض المعلم المهارة ويمثّلها بنفسه، ثم يمارسها الطلاب معه، ثم يؤدونها وحدهم. أي مبدأ يطبّق؟', opts:['التسليم التدريجي للمسؤولية','الاكتشاف الحر','التعلم الذاتي الكامل منذ البداية','الحفظ والاسترجاع'], answer:0, why:'ينتقل العبء تدريجيًا من المعلم (أنا أفعل) إلى المشاركة (نحن نفعل) ثم إلى الأداء المستقل (أنت تفعل).'},
+    {a:'strat', q:'أي سؤال يحفّز التفكير العليا أكثر؟', opts:['ما عاصمة فرنسا؟','لماذا اختلفت نتائج التجربتين برأيك، وكيف تتحقق من تفسيرك؟','هل يغلي الماء عند ١٠٠ درجة؟ نعم أم لا','ما اسم مؤلف الكتاب؟'], answer:1, why:'الأسئلة المفتوحة التي تطلب التفسير والتحقق تستدعي التحليل والتقويم، بخلاف أسئلة الاسترجاع والإجابات القصيرة.'},
+    {a:'strat', q:'أي أداة أنسب لتمثيل العلاقات بين مفاهيم الدرس بصريًا؟', opts:['الخريطة المفاهيمية','الاختبار الموضوعي','سجل الحضور','بطاقة الملاحظة'], answer:0, why:'الخريطة المفاهيمية تنظم المفاهيم في عُقد وتربطها بخطوط وكلمات ربط توضح العلاقة بينها.'},
+
+    {a:'engskill', q:'Which pair includes only receptive skills?', opts:['Listening and reading','Speaking and writing','Reading and writing','Listening and speaking'], answer:0, why:'المهارات الاستقبالية هي الاستماع والقراءة (يستقبل المتعلم المدخل)، والإنتاجية هي التحدث والكتابة (ينتج المتعلم اللغة).'},
+    {a:'engskill', q:'A teacher plays a short announcement once and asks students to decide what it is mainly about. Which listening sub-skill is practiced?', opts:['Listening for gist','Listening for specific information','Listening for sounds in isolation','Note-taking'], answer:0, why:'الاستماع للفكرة العامة (gist) يعني فهم الموضوع الرئيس دون التوقف عند التفاصيل.'},
+    {a:'engskill', q:'Students use what they already know about restaurants to understand a dialogue set in a café. This is mainly:', opts:['top-down processing','bottom-up processing','shadowing','dictation'], answer:0, why:'المعالجة من أعلى إلى أسفل تعتمد على المعرفة السابقة (schemata) والسياق لفهم المعنى العام، بينما المعالجة من أسفل إلى أعلى تبدأ من الأصوات والكلمات.'},
+    {a:'engskill', q:'In a free class discussion, the teacher avoids interrupting to correct errors so that students keep talking. The teacher is prioritizing:', opts:['fluency','accuracy','pronunciation drills','grammar translation'], answer:0, why:'الطلاقة تركّز على التواصل وتسامح مع الأخطاء ما دام المعنى واضحًا، بينما تركّز الدقة على سلامة الصياغة.'},
+    {a:'engskill', q:'Which task requires scanning?', opts:['Reading a passage quickly to get the general idea','Finding the date of an event in a schedule','Reading carefully to infer the writer’s attitude','Reading a novel for pleasure'], answer:1, why:'المسح (scanning) هو البحث السريع عن معلومة محددة كتاريخ أو اسم، أما التصفح (skimming) فللفكرة العامة.'},
+    {a:'engskill', q:'Which sequence reflects the process approach to writing?', opts:['Prewriting, drafting, revising, editing, publishing','Editing, drafting, publishing, prewriting','Drafting, publishing, prewriting, revising','Publishing, revising, editing, drafting'], answer:0, why:'تتدرج الكتابة وفق المدخل العملياتي من ما قبل الكتابة إلى المسودة ثم المراجعة والتدقيق ثم النشر.'},
+    {a:'engskill', q:'Words such as “however” and “moreover” mainly contribute to:', opts:['cohesion','phonology','morphology','fluency'], answer:0, why:'أدوات الربط تجعل النص متماسكًا (cohesion) بربط الجمل والأفكار ببعضها.'},
+    {a:'engskill', q:'Which activity is the most communicative speaking task?', opts:['Repeating sentences after the teacher','An information-gap activity in pairs','Reading a passage aloud','Memorizing a dialogue'], answer:1, why:'في نشاط فجوة المعلومات يحتاج كل طالب إلى معلومة يملكها زميله، فيتواصلان لسد الفجوة بهدف حقيقي.'},
+    {a:'engskill', q:'Before reading, students predict the content of a text from its title and pictures. This is a:', opts:['pre-reading activity','post-reading activity','while-reading activity','formal assessment'], answer:0, why:'التنبؤ بالمحتوى قبل القراءة ينشّط المعرفة السابقة ويهيئ الطلاب للنص، وهو من أنشطة ما قبل القراءة.'},
+    {a:'engskill', q:'Reading a graded reader at home for pleasure is an example of:', opts:['extensive reading','intensive reading','scanning','skimming'], answer:0, why:'القراءة الواسعة (extensive) قراءة نصوص طويلة للمتعة والطلاقة، أما المكثفة (intensive) فقراءة نص قصير بتركيز على التفاصيل.'},
+
+    {a:'engmethod', q:'According to Krashen’s Input Hypothesis, learners acquire language best when input is:', opts:['comprehensible and slightly beyond their current level (i+1)','far above their current level','identical to what they already know','available only in written form'], answer:0, why:'يرى كراشن أن الاكتساب يحدث بمدخل مفهوم يتجاوز مستوى المتعلم الحالي قليلًا (i+1).'},
+    {a:'engmethod', q:'A learner is anxious and unmotivated, so available input does not help him much. Which hypothesis explains this?', opts:['Affective Filter Hypothesis','Monitor Hypothesis','Natural Order Hypothesis','Acquisition–Learning Hypothesis'], answer:0, why:'فرضية المرشح العاطفي: القلق وضعف الدافعية والثقة يرفعان «المرشح» فيمنعان المدخل من أن يُستوعب.'},
+    {a:'engmethod', q:'Which researcher argues that producing language pushes learners to notice gaps in their knowledge?', opts:['Swain','Krashen','Skinner','Piaget'], answer:0, why:'فرضية المخرج المفهوم (Comprehensible Output) لميريل سوين: إنتاج اللغة يجعل المتعلم يلاحظ فجوات لغته.'},
+    {a:'engmethod', q:'A lesson focuses on memorizing grammar rules and translating sentences between Arabic and English. Which method is this?', opts:['Grammar-Translation Method','Audio-lingual Method','Direct Method','Communicative Language Teaching'], answer:0, why:'طريقة القواعد والترجمة تركز على القواعد والمفردات والترجمة، مع اهتمام ضعيف بالتحدث والاستماع.'},
+    {a:'engmethod', q:'Heavy repetition and pattern drills based on behaviorist learning theory describe:', opts:['the Audio-lingual Method','Communicative Language Teaching','Task-Based Language Teaching','the Silent Way'], answer:0, why:'الطريقة السمعية الشفهية قائمة على السلوكية: محاكاة وتكرار وتدريبات نمطية لتكوين العادات اللغوية.'},
+    {a:'engmethod', q:'Which is a key principle of Communicative Language Teaching?', opts:['Meaning and real communication are the focus','Error-free speech from the first lesson','Teacher-dominated lectures','Translating every sentence'], answer:0, why:'يركز التدريس التواصلي على المعنى والتواصل الحقيقي، ويتسامح مع الأخطاء بوصفها جزءًا من التعلم.'},
+    {a:'engmethod', q:'Students plan a class trip by exchanging information to reach a real outcome, with language as a tool. Which approach is this?', opts:['Task-Based Language Teaching','Grammar-Translation','Audio-lingual drilling','Rote memorization'], answer:0, why:'التعلم القائم على المهام (TBLT) ينظّم الدرس حول مهمة ذات ناتج حقيقي تستعمل فيها اللغة وسيلةً لإنجازها.'},
+    {a:'engmethod', q:'In lesson staging, what does PPP stand for?', opts:['Presentation, Practice, Production','Prediction, Practice, Performance','Preparation, Presentation, Planning','Practice, Production, Presentation'], answer:0, why:'نموذج PPP يبدأ بعرض اللغة الجديدة ثم تدريب موجّه ثم إنتاج حر.'},
+    {a:'engmethod', q:'A learner’s developing system between the first and the target language, with rules of its own, is called:', opts:['interlanguage','a pidgin','a lingua franca','a creole'], answer:0, why:'اللغة البينية (interlanguage) مصطلح سلنكر لنظام المتعلم المتطور الذي يقع بين لغته الأولى واللغة الهدف.'},
+    {a:'engmethod', q:'The influence of a learner’s first language on learning a second language is called:', opts:['language transfer','fossilization','code-switching','overgeneralization'], answer:0, why:'التداخل أو النقل اللغوي هو أثر اللغة الأولى في تعلم الثانية، وقد يكون إيجابيًا أو سلبيًا.'},
+    {a:'engmethod', q:'Errors that persist for years despite instruction and exposure are called:', opts:['fossilized errors','slips','mistakes of performance','transfer of training'], answer:0, why:'الأخطاء المتحجرة (fossilization) أخطاء تثبت في لغة المتعلم رغم التعليم والتعرض للغة.'},
+    {a:'engmethod', q:'TEFL refers to teaching English in a context where English is:', opts:['a foreign language, not widely used in the community','the learners’ first language','the only language of daily life','taught only to immigrants'], answer:0, why:'TEFL هو تعليم الإنجليزية لغةً أجنبية في بيئة لا تُستخدم فيها يوميًا، كما هو الحال في السعودية.'},
+
+    {a:'engling', q:'How many phonemes are there in the word “ship”?', opts:['2','3','4','5'], answer:1, why:'ship تنطق /ʃ/ ‏/ɪ/ ‏/p/ أي ثلاثة فونيمات، رغم أن حروفها أربعة.'},
+    {a:'engling', q:'Which pair is a minimal pair?', opts:['ship – sheep','cat – dog','table – chair','run – running'], answer:0, why:'الزوج الأدنى كلمتان تختلفان في فونيم واحد فقط، وهنا /ɪ/ مقابل /iː/ فتتغير الدلالة.'},
+    {a:'engling', q:'How many morphemes does “unhappiness” contain?', opts:['1','2','3','4'], answer:2, why:'un- (بادئة) + happy (جذر) + -ness (لاحقة) = ثلاثة مورفيمات.'},
+    {a:'engling', q:'Which of the following is a bound morpheme?', opts:['-ed','book','run','quickly'], answer:0, why:'المورفيم المقيّد لا يستقل بنفسه كاللاحقة -ed، أما book وrun فمورفيمان حران.'},
+    {a:'engling', q:'In “The book that I bought is interesting,” the group “that I bought” is a:', opts:['relative (adjective) clause','noun clause','adverbial clause','main clause'], answer:0, why:'جملة الصلة (relative clause) تصف الاسم book وتعمل عمل الصفة.'},
+    {a:'engling', q:'“Hot” and “cold” are examples of:', opts:['gradable antonyms','synonyms','homonyms','hyponyms'], answer:0, why:'الأضداد المتدرجة لها درجات بين طرفيها (دافئ، بارد قليلًا...).'},
+    {a:'engling', q:'“Rose” and “flower” show which sense relation?', opts:['Hyponymy','Synonymy','Antonymy','Homophony'], answer:0, why:'rose نوع من flower، فهي كلمة أخص تندرج تحت كلمة أعم (hyponymy).'},
+    {a:'engling', q:'At the dinner table someone says, “Can you pass the salt?” This is most likely:', opts:['an indirect request','a question about ability','a statement of fact','a command'], answer:0, why:'التداولية تهتم بما يقصده المتكلم: الجملة سؤال في الشكل لكنها طلب غير مباشر في الوظيفة.'},
+    {a:'engling', q:'“Could you possibly assist me?” and “Gimme a hand” differ mainly in:', opts:['register (formality)','accent','spelling','phonology'], answer:0, why:'السجل اللغوي (register) هو مستوى الرسمية المناسب للموقف والعلاقة بين المتحدثين.'},
+    {a:'engling', q:'Which sound is voiced?', opts:['/b/','/p/','/t/','/k/'], answer:0, why:'/b/ مجهور تهتز معه الأوتار الصوتية، أما /p/ و/t/ و/k/ فمهموسة.'},
+    {a:'engling', q:'“Their” and “there” are examples of:', opts:['homophones','homographs','synonyms','antonyms'], answer:0, why:'المتجانسات الصوتية (homophones) كلمات تُنطق بالطريقة نفسها وتختلف في الكتابة والمعنى.'}
+  ];
+
+  var LETTERS = ['أ','ب','ج','د'];
+  var app = document.getElementById('app');
+  var state = null;
+
+  function el(html){ var d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+  function shuffle(arr){ var a=arr.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function axisName(id){ for(var i=0;i<AXES.length;i++) if(AXES[i].id===id) return AXES[i].name; return ''; }
+  function isEn(id){ for(var i=0;i<AXES.length;i++) if(AXES[i].id===id) return !!AXES[i].en; return false; }
+  function ltr(q){ return isEn(q.a) ? ' dir="ltr" lang="en"' : ''; }
+  function bd(q, s){ return isEn(q.a) ? '<bdi dir="ltr" lang="en">'+esc(s)+'</bdi>' : esc(s); }
+  function count(id){ return BANK.filter(function(q){return q.a===id}).length; }
+  function nf(n){ try{ return n.toLocaleString('ar-EG'); }catch(e){ return String(n); } }
+
+  function getBest(mode){ try{ var v=localStorage.getItem('rukhsa-best-'+mode); return v===null?null:parseInt(v,10); }catch(e){ return null; } }
+  function setBest(mode,pct){ try{ var b=getBest(mode); if(b===null||pct>b) localStorage.setItem('rukhsa-best-'+mode, String(pct)); }catch(e){} }
+
+  function topbar(right){
+    return '<div class="top"><span class="brand">تجميعات الرخصة</span>'+(right||'')+'</div>';
+  }
+
+  function home(){
+    state = null;
+    var rows = '';
+    var mb = getBest('mixed');
+    rows += '<button class="axis mixed" data-mode="mixed"><h3>اختبار مختلط'+(mb!==null?'<span class="best">أفضل نتيجة '+nf(mb)+'٪</span>':'')+'</h3><small>عشرة أسئلة عشوائية من كل المحاور</small><span class="axis-meta"><span class="count">'+nf(10)+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
+    var lastG = '';
+    AXES.forEach(function(ax){
+      var b = getBest(ax.id);
+      if(ax.g!==lastG){
+        lastG = ax.g;
+        rows += '<p class="section-label grp">'+(ax.g==='eng'?'تخصص اللغة الإنجليزية (الأسئلة بالإنجليزية والشرح بالعربية)':'الجانب التربوي')+'</p>';
+      }
+      rows += '<button class="axis" data-mode="'+ax.id+'"><h3>'+esc(ax.name)+(b!==null?'<span class="best">أفضل نتيجة '+nf(b)+'٪</span>':'')+'</h3><small>'+esc(ax.desc)+'</small><span class="axis-meta"><span class="count">'+nf(count(ax.id))+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
+    });
+    app.innerHTML =
+      topbar('') +
+      '<section class="hero"><h1>راجع للرخصة المهنية <span class="hl">سؤالًا بسؤال</span></h1>' +
+      '<p>أسئلة تدريبية في الجانب التربوي وتخصص اللغة الإنجليزية، مع شرح بعد كل إجابة يوضح سبب الصواب. اختر محورًا وابدأ، أو جرّب اختبارًا مختلطًا.</p></section>' +
+      '<section><p class="section-label">اختر محورًا</p><div class="axes">'+rows+'</div></section>' +
+      '<p class="note">الأسئلة هنا من تأليفنا للمراجعة والتدرب، وليست أسئلة الاختبار الفعلي. راجع المحاور المعلنة من هيئة تقويم التعليم والتدريب.</p>' +
+      '<footer>نتائجك الأفضل تُحفظ في متصفحك فقط.</footer>';
+    Array.prototype.forEach.call(app.querySelectorAll('.axis'), function(b){
+      b.addEventListener('click', function(){ start(b.getAttribute('data-mode')); });
+    });
+    window.scrollTo(0,0);
+  }
+
+  function start(mode){
+    var pool = mode==='mixed' ? BANK : BANK.filter(function(q){return q.a===mode});
+    var picked = shuffle(pool);
+    if(mode==='mixed') picked = picked.slice(0,10);
+    state = {
+      mode: mode,
+      items: picked.map(function(q){
+        var order = shuffle([0,1,2,3]);
+        return {q:q, order:order, chosen:null};
+      }),
+      i: 0
+    };
+    renderQ();
+  }
+
+  function renderQ(){
+    var s = state, it = s.items[s.i], q = it.q, total = s.items.length;
+    var label = s.mode==='mixed' ? 'اختبار مختلط' : axisName(s.mode);
+    var opts = it.order.map(function(oi, pos){
+      return '<li><button class="opt" data-pos="'+pos+'"><span class="letter">'+LETTERS[pos]+'</span><span class="txt"'+ltr(q)+'>'+esc(q.opts[oi])+'</span></button></li>';
+    }).join('');
+    app.innerHTML =
+      topbar('<button class="link-btn" id="quit">إنهاء</button>') +
+      '<div class="progress"><div class="progress-row"><span class="tag">'+esc(axisName(q.a))+'</span><span>سؤال '+nf(s.i+1)+' من '+nf(total)+'</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="'+total+'" aria-valuenow="'+s.i+'"><i style="width:'+(s.i/total*100)+'%"></i></div></div>' +
+      '<h2 class="q"'+ltr(q)+'>'+esc(q.q)+'</h2>' +
+      '<ul class="options">'+opts+'</ul>' +
+      '<div id="fb" aria-live="polite"></div>';
+    document.getElementById('quit').addEventListener('click', home);
+    Array.prototype.forEach.call(app.querySelectorAll('.opt'), function(b){
+      b.addEventListener('click', function(){ choose(parseInt(b.getAttribute('data-pos'),10)); });
+    });
+    window.scrollTo(0,0);
+  }
+
+  function choose(pos){
+    var s = state, it = s.items[s.i], q = it.q;
+    if(it.chosen!==null) return;
+    it.chosen = pos;
+    var correctPos = it.order.indexOf(q.answer);
+    var ok = pos===correctPos;
+    Array.prototype.forEach.call(app.querySelectorAll('.opt'), function(b){
+      var p = parseInt(b.getAttribute('data-pos'),10);
+      b.disabled = true;
+      if(p===correctPos) b.classList.add('right');
+      else if(p===pos) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+    var last = s.i===s.items.length-1;
+    var fb = document.getElementById('fb');
+    fb.innerHTML =
+      '<div class="explain '+(ok?'ok':'no')+'"><strong>'+(ok?'إجابة صحيحة':'الإجابة الصحيحة: '+LETTERS[correctPos])+'</strong><p>'+esc(q.why)+'</p></div>' +
+      '<div class="actions" style="margin-top:16px"><button class="btn" id="next">'+(last?'عرض النتيجة':'السؤال التالي')+'</button></div>';
+    var nb = document.getElementById('next');
+    nb.addEventListener('click', function(){ if(last){ result(); } else { s.i++; renderQ(); } });
+    nb.focus({preventScroll:false});
+    fb.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  function result(){
+    var s = state, total = s.items.length;
+    var right = s.items.filter(function(it){ return it.order.indexOf(it.q.answer)===it.chosen; }).length;
+    var pct = Math.round(right/total*100);
+    setBest(s.mode, pct);
+    var verdict = pct>=80 ? '<span class="hl">نتيجة ممتازة.</span> استمر على هذا المستوى.'
+                : pct>=60 ? '<span class="hl">نتيجة جيدة.</span> راجع الأسئلة التي أخطأت فيها أدناه.'
+                : '<span class="hl">تحتاج مراجعة أكثر.</span> اقرأ الشرح أدناه ثم أعد المحاولة.';
+
+    var byAxis = {};
+    s.items.forEach(function(it){
+      var k = it.q.a; byAxis[k] = byAxis[k] || {r:0,t:0};
+      byAxis[k].t++; if(it.order.indexOf(it.q.answer)===it.chosen) byAxis[k].r++;
+    });
+    var brk = '';
+    AXES.forEach(function(ax){
+      var d = byAxis[ax.id]; if(!d) return;
+      brk += '<div class="brow"><span>'+esc(ax.name)+'</span><div class="bar"><i style="width:'+(d.r/d.t*100)+'%"></i></div><b>'+nf(d.r)+' / '+nf(d.t)+'</b></div>';
+    });
+
+    var wrong = s.items.filter(function(it){ return it.order.indexOf(it.q.answer)!==it.chosen; });
+    var rev = wrong.length ? wrong.map(function(it){
+      return '<div class="rcard"><h3'+ltr(it.q)+'>'+esc(it.q.q)+'</h3><p class="mine">إجابتك: '+bd(it.q,it.q.opts[it.order[it.chosen]])+'</p><p class="corr">الصواب: '+bd(it.q,it.q.opts[it.q.answer])+'</p><p class="why">'+esc(it.q.why)+'</p></div>';
+    }).join('') : '<p class="allgood">أجبت عن كل الأسئلة إجابة صحيحة.</p>';
+
+    app.innerHTML =
+      topbar('') +
+      '<section><div class="score"><b>'+nf(pct)+'٪</b><span>'+nf(right)+' من '+nf(total)+' إجابات صحيحة</span></div><p class="verdict">'+verdict+'</p></section>' +
+      '<section><p class="section-label">النتيجة حسب المحور</p><div class="breakdown">'+brk+'</div></section>' +
+      '<section><p class="section-label">'+(wrong.length?'راجع أخطاءك':'مراجعة')+'</p><div class="review">'+rev+'</div></section>' +
+      '<div class="actions"><button class="btn" id="again">أعد المحاولة</button><button class="btn ghost" id="home">القائمة الرئيسية</button></div>';
+    document.getElementById('again').addEventListener('click', function(){ start(s.mode); });
+    document.getElementById('home').addEventListener('click', home);
+    window.scrollTo(0,0);
+  }
+
+  home();
+})();
+</script>
+
+</body>
+</html>
