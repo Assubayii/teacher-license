@@ -256,27 +256,47 @@ footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); p
     return '<div class="top"><span class="brand">تجميعات الرخصة</span>'+(right||'')+'</div>';
   }
 
+  var GROUPS = {
+    ped:{name:'اختبار تربوي', desc:'نظريات التعلم والنمو والتقويم وإدارة الصف واستراتيجيات التدريس'},
+    eng:{name:'اختبار تخصص اللغة الإنجليزية', desc:'مهارات اللغة وطرائق التدريس واكتساب اللغة واللسانيات'}
+  };
+  function groupOf(mode){ if(mode==='mixed-ped') return 'ped'; if(mode==='mixed-eng') return 'eng'; for(var i=0;i<AXES.length;i++) if(AXES[i].id===mode) return AXES[i].g; return 'ped'; }
+  function gCount(g){ return BANK.filter(function(q){ return groupOf(q.a)===g; }).length; }
+  function gAxes(g){ return AXES.filter(function(ax){ return ax.g===g; }); }
+
   function home(){
     state = null;
     var rows = '';
-    var mb = getBest('mixed');
-    rows += '<button class="axis mixed" data-mode="mixed"><h3>اختبار مختلط'+(mb!==null?'<span class="best">أفضل نتيجة '+nf(mb)+'٪</span>':'')+'</h3><small>عشرة أسئلة عشوائية من كل المحاور</small><span class="axis-meta"><span class="count">'+nf(10)+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
-    var lastG = '';
-    AXES.forEach(function(ax){
-      var b = getBest(ax.id);
-      if(ax.g!==lastG){
-        lastG = ax.g;
-        rows += '<p class="section-label grp">'+(ax.g==='eng'?'تخصص اللغة الإنجليزية (الأسئلة بالإنجليزية والشرح بالعربية)':'الجانب التربوي')+'</p>';
-      }
-      rows += '<button class="axis" data-mode="'+ax.id+'"><h3>'+esc(ax.name)+(b!==null?'<span class="best">أفضل نتيجة '+nf(b)+'٪</span>':'')+'</h3><small>'+esc(ax.desc)+'</small><span class="axis-meta"><span class="count">'+nf(count(ax.id))+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
+    ['ped','eng'].forEach(function(g){
+      rows += '<button class="axis mixed" data-group="'+g+'"><h3>'+esc(GROUPS[g].name)+'</h3><small>'+esc(GROUPS[g].desc)+'</small><span class="axis-meta"><span class="count">'+nf(gCount(g))+' سؤالًا في '+nf(gAxes(g).length)+' محاور</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
     });
     app.innerHTML =
       topbar('') +
       '<section class="hero"><h1>راجع للرخصة المهنية <span class="hl">سؤالًا بسؤال</span></h1>' +
-      '<p>أسئلة تدريبية في الجانب التربوي وتخصص اللغة الإنجليزية، مع شرح بعد كل إجابة يوضح سبب الصواب. اختر محورًا وابدأ، أو جرّب اختبارًا مختلطًا.</p></section>' +
-      '<section><p class="section-label">اختر محورًا</p><div class="axes">'+rows+'</div></section>' +
+      '<p>أسئلة تدريبية مع شرح بعد كل إجابة يوضح سبب الصواب. اختر الاختبار الذي تريد مراجعته.</p></section>' +
+      '<section><p class="section-label">اختر الاختبار</p><div class="axes">'+rows+'</div></section>' +
       '<p class="note">الأسئلة هنا من تأليفنا للمراجعة والتدرب، وليست أسئلة الاختبار الفعلي. راجع المحاور المعلنة من هيئة تقويم التعليم والتدريب.</p>' +
       '<footer>نتائجك الأفضل تُحفظ في متصفحك فقط.</footer>';
+    Array.prototype.forEach.call(app.querySelectorAll('.axis'), function(b){
+      b.addEventListener('click', function(){ group(b.getAttribute('data-group')); });
+    });
+    window.scrollTo(0,0);
+  }
+
+  function group(g){
+    state = null;
+    var mk = 'mixed-'+g, mb = getBest(mk);
+    var rows = '<button class="axis mixed" data-mode="'+mk+'"><h3>اختبار مختلط'+(mb!==null?'<span class="best">أفضل نتيجة '+nf(mb)+'٪</span>':'')+'</h3><small>عشرة أسئلة عشوائية من كل محاور هذا الاختبار</small><span class="axis-meta"><span class="count">'+nf(Math.min(10,gCount(g)))+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
+    gAxes(g).forEach(function(ax){
+      var b = getBest(ax.id);
+      rows += '<button class="axis" data-mode="'+ax.id+'"><h3>'+esc(ax.name)+(b!==null?'<span class="best">أفضل نتيجة '+nf(b)+'٪</span>':'')+'</h3><small>'+esc(ax.desc)+'</small><span class="axis-meta"><span class="count">'+nf(count(ax.id))+' أسئلة</span><span class="axis-go" aria-hidden="true">←</span></span></button>';
+    });
+    app.innerHTML =
+      topbar('<button class="link-btn" id="back-home">رجوع</button>') +
+      '<section class="hero"><h1>'+esc(GROUPS[g].name)+'</h1>' +
+      (g==='eng' ? '<p>الأسئلة بالإنجليزية والشرح بالعربية.</p>' : '<p>اختر محورًا وابدأ، أو جرّب اختبارًا مختلطًا.</p>') + '</section>' +
+      '<section><p class="section-label">اختر محورًا</p><div class="axes">'+rows+'</div></section>';
+    document.getElementById('back-home').addEventListener('click', home);
     Array.prototype.forEach.call(app.querySelectorAll('.axis'), function(b){
       b.addEventListener('click', function(){ start(b.getAttribute('data-mode')); });
     });
@@ -284,9 +304,10 @@ footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); p
   }
 
   function start(mode){
-    var pool = mode==='mixed' ? BANK : BANK.filter(function(q){return q.a===mode});
+    var isMixed = mode.indexOf('mixed')===0;
+    var pool = isMixed ? BANK.filter(function(q){ return groupOf(q.a)===groupOf(mode); }) : BANK.filter(function(q){return q.a===mode});
     var picked = shuffle(pool);
-    if(mode==='mixed') picked = picked.slice(0,10);
+    if(isMixed) picked = picked.slice(0,10);
     state = {
       mode: mode,
       items: picked.map(function(q){
@@ -310,17 +331,22 @@ footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); p
       '<h2 class="q"'+ltr(q)+'>'+esc(q.q)+'</h2>' +
       '<ul class="options">'+opts+'</ul>' +
       '<div id="fb" aria-live="polite"></div>';
-    document.getElementById('quit').addEventListener('click', home);
+    document.getElementById('quit').addEventListener('click', function(){ group(groupOf(s.mode)); });
     Array.prototype.forEach.call(app.querySelectorAll('.opt'), function(b){
       b.addEventListener('click', function(){ choose(parseInt(b.getAttribute('data-pos'),10)); });
     });
-    window.scrollTo(0,0);
+    if(it.chosen!==null){ showFeedback(); } else { window.scrollTo(0,0); }
   }
 
   function choose(pos){
-    var s = state, it = s.items[s.i], q = it.q;
+    var it = state.items[state.i];
     if(it.chosen!==null) return;
     it.chosen = pos;
+    showFeedback();
+  }
+
+  function showFeedback(){
+    var s = state, it = s.items[s.i], q = it.q, pos = it.chosen;
     var correctPos = it.order.indexOf(q.answer);
     var ok = pos===correctPos;
     Array.prototype.forEach.call(app.querySelectorAll('.opt'), function(b){
@@ -334,9 +360,11 @@ footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); p
     var fb = document.getElementById('fb');
     fb.innerHTML =
       '<div class="explain '+(ok?'ok':'no')+'"><strong>'+(ok?'إجابة صحيحة':'الإجابة الصحيحة: '+LETTERS[correctPos])+'</strong><p>'+esc(q.why)+'</p></div>' +
-      '<div class="actions" style="margin-top:16px"><button class="btn" id="next">'+(last?'عرض النتيجة':'السؤال التالي')+'</button></div>';
+      '<div class="actions" style="margin-top:16px">'+(s.i>0?'<button class="btn ghost" id="prev">السؤال السابق</button>':'')+'<button class="btn" id="next">'+(last?'عرض النتيجة':'السؤال التالي')+'</button></div>';
     var nb = document.getElementById('next');
     nb.addEventListener('click', function(){ if(last){ result(); } else { s.i++; renderQ(); } });
+    var pb = document.getElementById('prev');
+    if(pb) pb.addEventListener('click', function(){ s.i--; renderQ(); });
     nb.focus({preventScroll:false});
     fb.scrollIntoView({behavior:'smooth', block:'nearest'});
   }
@@ -371,9 +399,9 @@ footer{font-size:15.5px; color:var(--muted); border-top:1px solid var(--line); p
       '<section><div class="score"><b>'+nf(pct)+'٪</b><span>'+nf(right)+' من '+nf(total)+' إجابات صحيحة</span></div><p class="verdict">'+verdict+'</p></section>' +
       '<section><p class="section-label">النتيجة حسب المحور</p><div class="breakdown">'+brk+'</div></section>' +
       '<section><p class="section-label">'+(wrong.length?'راجع أخطاءك':'مراجعة')+'</p><div class="review">'+rev+'</div></section>' +
-      '<div class="actions"><button class="btn" id="again">أعد المحاولة</button><button class="btn ghost" id="home">القائمة الرئيسية</button></div>';
+      '<div class="actions"><button class="btn" id="again">أعد المحاولة</button><button class="btn ghost" id="home">رجوع للقائمة</button></div>';
     document.getElementById('again').addEventListener('click', function(){ start(s.mode); });
-    document.getElementById('home').addEventListener('click', home);
+    document.getElementById('home').addEventListener('click', function(){ group(groupOf(s.mode)); });
     window.scrollTo(0,0);
   }
 
